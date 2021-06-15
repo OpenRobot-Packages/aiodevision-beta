@@ -1,30 +1,12 @@
 import asyncio
+from sys import path
 import aiohttp
 from io import BytesIO
 import imghdr
 from .dataclasses import CDN, CDNStats, RTFS, RTFM, UploadStats, XKCD
 import typing
-
-
-class UndefinedLibraryError(Exception):
-    pass
-
-
-class TokenRequired(Exception):
-    pass
-
-
-class InvalidImage(Exception):
-    pass
-
-
-class InternalServerError(Exception):
-    pass
-
-
-class InvalidDocumentation(Exception):
-    pass
-
+from .errors import *
+from .baseclasses import *
 
 class Client:
     def __init__(self, token: typing.Optional[str] = None) -> None:
@@ -107,6 +89,81 @@ class Client:
         ) as resp:
             data = await resp.json()
         return RTFM(data['nodes'], float(data['query_time']))
+    
+    async def chess(self, data: typing.Union[ChessData, dict]):
+        if not self.token:
+            raise TokenRequired('A Token is required to access this endpoint')
+
+        if not isinstance(data, (ChessData, dict)):
+            raise InvalidData(f'Expected ChessData or dict but got {data.__class__.__name__} instead')
+
+        payload = {}
+
+        if isinstance(data, ChessData):
+            payload = data.to_payload()
+        elif isinstance(data, dict):
+            payload = data
+
+        if 'white-theme' not in payload:
+            raise InvalidData("Missing 'white-theme' key.")
+        if 'black-theme' not in payload:
+            raise InvalidData("Missing 'black-theme' key.")
+        if 'board-theme' not in payload:
+            raise InvalidData("Missing 'board-theme' key.")
+
+        async with self.session.post('https://idevision.net/api/games/chess', data=payload) as resp:
+            return await resp.json()
+
+    async def chess_render(self, data: typing.Union[ChessRender, dict], arrow: typing.Union[typing.Any, None] = None):
+        if not self.token:
+            raise TokenRequired('A Token is required to access this endpoint')
+
+        if not isinstance(data, (ChessRender, dict)):
+            raise InvalidData(f'Expected ChessRender or dict but got {data.__class__.__name__} instead')
+
+        payload = {}
+
+        if isinstance(data, ChessRender):
+            payload = data.to_payload()
+        elif isinstance(data, dict):
+            payload = data
+
+        async with self.session.post('https://idevision.net/api/games/chess/render', data=payload) as resp:
+            return BytesIO(await resp.read())
+
+    async def chess_turn(self, data: typing.Union[ChessTurn, dict]):
+        if not self.token:
+            raise TokenRequired('A Token is required to access this endpoint')
+
+        if not isinstance(data, (ChessTurn, dict)):
+            raise InvalidData(f'Expected ChessTurn or dict but got {data.__class__.__name__} instead')
+
+        payload = {}
+
+        if isinstance(data, ChessTurn):
+            payload = data.to_payload()
+        elif isinstance(data, dict):
+            payload = data
+
+        async with self.session.post('https://idevision.net/api/games/chess/turn', data=payload) as resp:
+            return await resp.json()
+
+    async def chess_transcript(self, data: typing.Union[ChessTranscript, dict]):
+        if not self.token:
+            raise TokenRequired('A Token is required to access this endpoint')
+
+        if not isinstance(data, (ChessTranscript, dict)):
+            raise InvalidData(f'Expected ChessTranscript or dict but got {data.__class__.__name__} instead')
+
+        payload = {}
+
+        if isinstance(data, ChessTranscript):
+            payload = data.to_payload()
+        elif isinstance(data, dict):
+            payload = data
+
+        async with self.session.post('https://idevision.net/api/games/chess/transcript', data=payload) as resp:
+            return await resp.text()
 
     async def ocr(self, image: BytesIO) -> str:
         if not self.token:
@@ -126,7 +183,7 @@ class Client:
                 raise InternalServerError(
                     'An Internal Server Error occured.'
                     ' Please join the discord server https://discord.gg/D3Nfau4ThK and scream at IAmTomahawkx#1000'
-                    " about why the RTFS endpoint doesn't work."
+                    " about why the OCR endpoint doesn't work."
                 )
             data = await resp.json()
         return data['data']
