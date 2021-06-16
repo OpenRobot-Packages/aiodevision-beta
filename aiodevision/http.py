@@ -26,12 +26,16 @@ class HTTPClient:
         headers = kwargs.pop("headers", None)
         session = kwargs.pop("session", self.session)
         retry = kwargs.pop("retry", self.retry)
+        raw_client_response = kwargs.pop("raw", False)
         
         for _ in range(retry):
             async with cs.request(
                 method, url, **kwargs
             ) as response:
                 if response.status in [200, 201]:
+                    if raw:
+                        return response
+                    
                     try:
                         return await response.json()
                     except:
