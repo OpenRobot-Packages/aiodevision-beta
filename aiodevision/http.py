@@ -16,6 +16,9 @@ class HTTPClient:
             self.client.base_url = (self.client.base_url + "/")
             
         base_url = self.base_url
+        
+        if url.startswith("/"):
+            url = url[:-1]
             
         if not url.startswith(base_url):
             url = (base_url + url)
