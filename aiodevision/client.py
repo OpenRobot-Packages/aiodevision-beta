@@ -8,6 +8,7 @@ import typing
 from .errors import *
 from .baseclasses import *
 from .enums import *
+from .http import HTTPClient
 
 class Client:
     def __init__(self, token: typing.Optional[str] = None, *, url: str = "https://idevision.net/", retry: int = 5) -> None:
@@ -22,6 +23,8 @@ class Client:
             url = (url + "/")
             
         self.base_url = url
+        
+        self.http = HTTPClient(self)
 
     async def rtfs(
         self,
