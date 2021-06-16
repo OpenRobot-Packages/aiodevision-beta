@@ -3,6 +3,13 @@ import enum
 class Enum(enum.Enum):
     def __str__(self):
         return self.name
+    
+class LibraryEnum(Enum):
+    discordpy = 0
+    discordpy2 = 1
+    twitchio = 3
+    wavelink = 4
+    aiohttp = 5
 
 class ChessPiece(Enum):
     white = 0
