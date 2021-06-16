@@ -15,7 +15,7 @@ class InvalidImage(AioDevisionException):
 
 
 class InternalServerError(AioDevisionException):
-    """An Exception when an unknown error happens. Go join x and Scream at IAmTomahawkx#1000."""
+    """An Exception when an unknown error happens. Go join https://discord.gg/xYSRTrjUun and Scream at IAmTomahawkx#1000."""
 
 
 class InvalidDocumentation(AioDevisionException):
