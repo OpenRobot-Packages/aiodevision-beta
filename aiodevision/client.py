@@ -7,6 +7,7 @@ from .dataclasses import CDN, CDNStats, RTFS, RTFM, UploadStats, XKCD
 import typing
 from .errors import *
 from .baseclasses import *
+from .enums import *
 
 class Client:
     def __init__(self, token: typing.Optional[str] = None, *, url: str = "https://idevision.net/", retry: int = 5) -> None:
