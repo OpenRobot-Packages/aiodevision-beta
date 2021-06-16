@@ -14,6 +14,7 @@ class Client:
         headers = {'Authorization': token.strip()} if token else None
         self.session = aiohttp.ClientSession(headers=headers, raise_for_status = True)
         self.token = token.strip() if token else None
+        self.headers = headers
 
     async def rtfs(
         self,
