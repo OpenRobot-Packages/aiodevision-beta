@@ -1,6 +1,7 @@
 class AioDevisionException(Exception):
     """The Base exceptions to all other exceptions."""
 
+
 class UndefinedLibraryError(AioDevisionException):
     """An Exception when you defined a undefined lib in RTFS endpoint."""
 
