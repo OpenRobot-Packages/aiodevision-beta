@@ -28,5 +28,6 @@ class InvalidData(AioDevisionException):
 class NotFound(AioDevisionException):
     """The URL provided was Not Found."""
 
+    
 class MaxRetryReached(AioDevisionException):
     """Max retries reached for a request. This can be changed using Client.retry."""
