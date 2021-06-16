@@ -10,6 +10,10 @@ class LibraryEnum(Enum):
     twitchio = 3
     wavelink = 4
     aiohttp = 5
+    
+class RTFSFormat(Enum):
+    links = 0
+    source = 1
 
 class ChessPiece(Enum):
     white = 0
