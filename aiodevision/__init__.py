@@ -1,4 +1,4 @@
-from .client import *
+from .client import Client
 from .dataclasses import *
 from .enums import *
 from .baseclasses import *
