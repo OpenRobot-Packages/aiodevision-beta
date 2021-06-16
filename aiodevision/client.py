@@ -9,12 +9,18 @@ from .errors import *
 from .baseclasses import *
 
 class Client:
-    def __init__(self, token: typing.Optional[str] = None) -> None:
+    def __init__(self, token: typing.Optional[str] = None, *, url: str = "https://idevision.net/", retry: int = 5) -> None:
         self.loop = asyncio.get_event_loop()
         headers = {'Authorization': token.strip()} if token else None
         self.session = aiohttp.ClientSession(headers=headers, raise_for_status = True)
         self.token = token.strip() if token else None
         self.headers = headers
+        self.retry = retry
+        
+        if not url.endswith("/"):
+            url = (url + "/")
+            
+        self.base_url = url
 
     async def rtfs(
         self,
