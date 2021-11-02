@@ -8,7 +8,7 @@ If you would like to contribute/add anything, feel free to make a PR.
 # Installation
 For installing, do
 ```py
-pip install git+https://github.com/proguy914629bot/aiodevision
+pip install git+https://github.com/OpenRobot-Packages/aiodevision
 ```
 
 
